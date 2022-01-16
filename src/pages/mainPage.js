@@ -75,8 +75,8 @@ const MainPage = () => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const logoHeightStyle = useSpring({
-        from: {height: '50vh',},
-        to: {height: '20vh',},
+        from: {height: isMobile ? 'auto' : '50vh',},
+        to: {height: isMobile ? 'auto' : '20vh',},
         delay: 2000,
         config: {duration: 1500}
     })
@@ -84,21 +84,19 @@ const MainPage = () => {
     const logoOpacityStyle = useSpring({
         from: {opacity: 0,},
         to: {opacity: 1,},
-        delay: 1000,
-        config: {duration: 1000}
+        delay: isMobile ? 0 : 1000,
+        config: {duration: isMobile ? 1500 : 1000}
     })
 
     const sunStyle = useSpring({
-        from: {top: -50},
-        to: {top: 20},
-        delay: 0,
+        from: {top: isMobile ? 100 : -50},
+        to: {top: isMobile ? 120 : 20},
         config: {duration: 2000}
     })
 
     const cloudsStyle = useSpring({
         from: {backgroundPosition: '100vw top',},
         to: {backgroundPosition: '-100vw top',},
-        delay: 0,
         loop: true,
         config: {duration: 60000}
     })
@@ -106,7 +104,7 @@ const MainPage = () => {
     const streamStyle = useSpring({
         from: {opacity: 0,},
         to: {opacity: 1,},
-        delay: 3500,
+        delay: isMobile ? 1500 : 3500,
         config: {duration: 250}
     })
 
@@ -121,7 +119,7 @@ const MainPage = () => {
                 <div style={{
                     backgroundImage: `url(${city})`,
                     backgroundPosition: 'center top',
-                    backgroundRepeat: 'no-repeat',
+                    backgroundRepeat: 'repeat-x',
                     position: 'absolute',
                     width: '100%',
                     height: '100%',
@@ -135,18 +133,20 @@ const MainPage = () => {
                     src={sun}
                     style={{
                         position: 'absolute',
+                        zIndex: 2,
+                        overflow: 'hidden',
+                        width: isMobile ? '100vw' : 'auto',
                         left: 0,
                         right: 0,
                         marginRight: 'auto',
                         marginLeft: 'auto',
-                        zIndex: 2,
                         ...sunStyle
                     }}
                 />
                 <div style={{
                     backgroundImage: `url(${sky})`,
                     backgroundPosition: 'center top',
-                    backgroundRepeat: 'no-repeat',
+                    backgroundRepeat: 'repeat-x',
                     position: 'absolute',
                     left: 0,
                     right: 0,
@@ -182,6 +182,8 @@ const MainPage = () => {
                             src={logo}
                             alt='logo_1'
                             style={{
+                                overflow: 'hidden',
+                                width: isMobile ? '80vw' : 'auto',
                                 ...logoHeightStyle,
                                 ...logoOpacityStyle,
                             }}
@@ -189,9 +191,9 @@ const MainPage = () => {
                         <animated.div
                             style={{
                                 background: '#311D6B',
-                                height: '65vh',
-                                width: '115vh',
-                                marginTop: 24,
+                                height: isMobile ? '51vw' : '65vh',
+                                width: isMobile ? '90vw' : '115vh',
+                                marginTop: isMobile ? '15vh' : 24,
                                 marginRight: 'auto',
                                 marginLeft: 'auto',
                                 border: '8px solid transparent',
@@ -206,7 +208,7 @@ const MainPage = () => {
                                 margin: 0,
                                 textAlign: 'center',
                                 fontSize: '3rem',
-                                lineHeight: '65vh',
+                                lineHeight: isMobile ? '51vw' : '65vh',
                                 color: '#ABC8FF'
                             }}>
                                 ►
