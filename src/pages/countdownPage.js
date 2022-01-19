@@ -1,10 +1,4 @@
-import {
-    Card,
-    createTheme,
-    responsiveFontSizes, Stack,
-    ThemeProvider, Typography,
-    useMediaQuery
-} from "@mui/material";
+import {createTheme, responsiveFontSizes, Stack, ThemeProvider, Typography, useMediaQuery} from "@mui/material";
 import {animated, useSpring} from "react-spring";
 import Countdown from "react-countdown";
 import {useState} from "react";
@@ -12,6 +6,7 @@ import './digitalFont.css';
 
 import bg from '../images/bg_countdown.jpg'
 import logo from '../images/logo.png'
+import moment from "moment-timezone";
 
 
 let theme = createTheme({})
@@ -55,6 +50,8 @@ const OldCountdown = () => {
     const [secondsLeft, setSecondsLeft] = useState(0);
 
     const myDate = new Date(2022, 0, 24, 11, 0, 0);
+    let moscowFutureDate = moment(myDate).tz('Europe/Moscow', true);
+    let localFutureDate = moscowFutureDate.local();
 
     const countdownLabel = ({days, hours, minutes, seconds, completed}) => {
         setDaysLeft(days)
@@ -89,7 +86,7 @@ const OldCountdown = () => {
                 <CountdownElement number={secondsLeft} name='sec'/>
             </Stack>
             <Countdown
-                date={myDate}
+                date={localFutureDate.toDate()}
                 renderer={countdownLabel}
                 style={{display: 'none'}}
             />
