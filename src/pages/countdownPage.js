@@ -1,12 +1,25 @@
-import {createTheme, responsiveFontSizes, Stack, ThemeProvider, Typography, useMediaQuery} from "@mui/material";
+import {
+    Container,
+    createTheme, Grid,
+    IconButton,
+    responsiveFontSizes,
+    Slide,
+    Stack,
+    ThemeProvider,
+    Typography,
+    useMediaQuery
+} from "@mui/material";
 import {animated, useSpring} from "react-spring";
 import Countdown from "react-countdown";
 import {useState} from "react";
-import './digitalFont.css';
+import './styles.css';
 
 import bg from '../images/bg_countdown.jpg'
 import logo from '../images/logo.png'
 import moment from "moment-timezone";
+import NeonButton from "../components/neonButton";
+import CloseIcon from '@mui/icons-material/Close';
+import {useNavigate} from "react-router-dom";
 
 
 let theme = createTheme({})
@@ -97,6 +110,7 @@ const OldCountdown = () => {
 const CountdownPage = () => {
 
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    let navigate = useNavigate();
 
     const logoHeightStyle = useSpring({
         from: {height: isMobile ? 'auto' : '50vh',},
@@ -117,6 +131,13 @@ const CountdownPage = () => {
         to: {opacity: 2,},
         delay: isMobile ? 1500 : 3500,
         config: {duration: 250}
+    })
+
+    const underlineStyle = useSpring({
+        from: {marginLeft: -1000,},
+        to: {marginLeft: 0,},
+        delay: isMobile ? 1500 : 3500,
+        config: {duration: 750}
     })
 
     return (
@@ -159,7 +180,7 @@ const CountdownPage = () => {
                         style={{
                             overflow: 'hidden',
                             width: isMobile ? '80vw' : 'auto',
-                            marginTop: isMobile ? '7vh' : 0,
+                            marginTop: isMobile ? '6vh' : 0,
                             ...logoHeightStyle,
                             ...logoOpacityStyle,
                         }}
@@ -177,34 +198,86 @@ const CountdownPage = () => {
                     >
 
                         <Typography
-                            variant={isMobile ? 'h5' : 'h4'}
+                            display="inline"
+                            variant={isMobile ? 'h5' : 'h5'}
                             sx={{
                                 color: 'white',
                                 fontFamily: "'Montserrat', sans-serif",
-                                fontWeight: 300,
+                                fontWeight: 400,
+                                textTransform: 'uppercase',
                             }}
                         >
-                            Отправляемся в будущее на скорости Санофи Джензайм!
+                            {'Здесь начинается ваша миссия '}
                         </Typography>
-
-
                         <Typography
+                            display="inline"
                             variant={isMobile ? 'h5' : 'h4'}
                             sx={{
                                 color: 'white',
                                 fontFamily: "'Montserrat', sans-serif",
-                                fontWeight: 300,
+                                fontWeight: 500,
+                                textTransform: 'uppercase',
+                            }}
+                        >
+                            «За гранью будущего»
+                        </Typography>
+                        <animated.div
+                            className='underline'
+                            style={{
+                                position: 'relative',
+                                height: '4px',
+                                width: '100%',
+                                borderRadius: 12,
+                                opacity: 0.9,
+                                marginTop: 16,
+                                background: 'linear-gradient(to right, rgba(244,64,148,1) 0%, rgba(0,120,240,1) 100%)',
+                                boxShadow: '0 0 1px linear-gradient(to right, rgba(244,64,148,1) 0%, rgba(0,120,240,1) 100%),',
+                                ...underlineStyle,
+                            }}
+                        />
+                        <Typography
+                            variant='h5'
+                            sx={{
+                                color: 'white',
+                                fontFamily: "'Montserrat', sans-serif",
+                                fontWeight: 400,
                                 marginTop: 2
                             }}
                         >
-                            Вместе совершим пространственно-временной прыжок через:
+                            Персональный апгрейд Sanofi Genzyme начнется через:
+                        </Typography>
+                        <Typography
+                            variant='h5'
+                            sx={{
+                                color: 'white',
+                                fontFamily: "'Montserrat', sans-serif",
+                                fontWeight: 200,
+                                marginTop: 0
+                            }}
+                        >
+                            The broadcast will start in:
                         </Typography>
                         <OldCountdown/>
+                        <div style={{height: 16}}/>
+                        <NeonButton text='перейти на трансляцию' onClick={() => navigate('/stream')}/>
+                        <Typography
+                            variant='body2'
+                            sx={{
+                                color: '#fff',
+                                fontFamily: "'Montserrat', sans-serif",
+                                fontWeight: 200,
+                                marginTop: 0,
+                                textAlign: 'center'
+                            }}
+                        >
+                            *go to the broadcast
+                        </Typography>
                     </animated.div>
                 </div>
             </div>
         </ThemeProvider>
-    );
+    )
+        ;
 }
 
 export default CountdownPage;
