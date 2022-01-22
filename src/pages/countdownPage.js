@@ -276,8 +276,7 @@ const CountdownPage = () => {
                 </div>
             </div>
         </ThemeProvider>
-    )
-        ;
+    );
 }
 
 export default CountdownPage;
