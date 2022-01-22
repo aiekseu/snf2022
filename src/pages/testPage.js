@@ -2,7 +2,10 @@ import {
     Button,
     Container,
     createTheme,
+    FormControlLabel,
     Grid,
+    Radio,
+    RadioGroup,
     responsiveFontSizes,
     Stack,
     ThemeProvider,
@@ -19,19 +22,35 @@ import {Box, styled} from "@mui/system";
 import {useState} from "react";
 
 
-const AnswerButton = styled((props) => <Button {...props} variant={'outlined'}/>)(({theme}) => ({
-    fontWeight: 500,
-    paddingRight: theme.spacing(3),
-    paddingLeft: theme.spacing(3),
-    textTransform: 'initial',
-    color: 'white',
-    background: 'rgba(29,29,47,0.7)',
-    '&.MuiButton-outlined': {
-        borderColor: 'rgb(62,59,86)'
+const StyledRadio = styled((props) => <Radio size={'small'} {...props}/>)(() => ({
+    '& > span': {
+        color: 'rgba(152,152,182,0.7)',
+    },
+    '&.Mui-checked > span': {
+        color: 'rgba(255,0,200,0.7)'
     }
 }));
 
-const SelectedAnswerButton = styled(AnswerButton)(({theme}) => ({
+const RadioControlLabel = styled((props) =>
+    <FormControlLabel {...props} control={<StyledRadio/>}/>)
+(({theme}) => ({
+    paddingRight: theme.spacing(1),
+    paddingLeft: theme.spacing(1),
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
+    background: 'rgba(29,29,47,0.7)',
+    borderWidth: 1,
+    borderRadius: theme.shape.borderRadius,
+    borderStyle: 'solid',
+    borderColor: 'rgb(62,59,86)',
+    '&> span': {
+        fontWeight: 500,
+        fontSize: 14,
+        color: 'white',
+    }
+}));
+
+const SelectedRadioControlLabel = styled(RadioControlLabel)(() => ({
     background: 'rgba(47,47,77,0.7)',
     '&.MuiButton-outlined': {
         borderColor: 'rgb(110,104,153)'
@@ -99,7 +118,7 @@ const questions = [
             'Дэвид Хугазян'
         ]
     },
-]
+];
 
 
 const TestPage = () => {
@@ -118,25 +137,22 @@ const TestPage = () => {
                 }
             },
         }
-    })
+    });
     theme = responsiveFontSizes(theme);
 
-    const {num} = useParams()
-
-    const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+    const {num} = useParams();
 
     const logoOpacityStyle = useSpring({
         from: {opacity: 0,},
         to: {opacity: 1,},
         delay: 0,
         config: {duration: 1500}
-    })
+    });
 
     return (
         <ThemeProvider theme={theme}>
             <Box pb={4}
                  style={{
-                     position: 'relative',
                      minHeight: '100vh',
                      backgroundImage: `url(${bg})`,
                      backgroundPosition: 'center top',
@@ -147,12 +163,6 @@ const TestPage = () => {
                     <animated.img src={logo}
                                   alt='logo'
                                   style={{
-                                      // position: 'absolute',
-                                      top: isMobile ? '1%' : '5%',
-                                      left: '2%',
-                                      right: isMobile ? 0 : 'unset',
-                                      marginRight: 'auto',
-                                      marginLeft: 'auto',
                                       zIndex: 1,
                                       width: 'auto',
                                       height: '20vh',
@@ -160,24 +170,12 @@ const TestPage = () => {
                                   }}
                     />
                 </Box>
-                <div
-                    style={{
-                        // position: 'absolute',
-                        left: 0,
-                        right: 0,
-                        top: isMobile ? '6%' : '10%',
-                        marginRight: 'auto',
-                        marginLeft: 'auto',
-                    }}
-                >
-                    <Question
-                        num={num}
-                        question={questions[num - 1].question}
-                        answers={questions[num - 1].answers}
-                    />
-                </div>
+                <Question
+                    num={num}
+                    question={questions[num - 1].question}
+                    answers={questions[num - 1].answers}
+                />
             </Box>
-
         </ThemeProvider>
     );
 }
@@ -189,92 +187,89 @@ const Question = (props) => {
     const [hasError, setHasError] = useState(false);
 
     let num = parseInt(props.num);
+    const maxNum = 5;
 
     let navigate = useNavigate();
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
     const sendData = (answer) => {
-        console.log(`Send >>> [${answer}]`)
+        console.log(`Send >>> [${answer}]`);
     };
 
-    const goNext = (event) => {
+    const goNext = () => {
         if (selectedAnswer.length === 0) {
-            setHasError(true)
-            return
+            setHasError(true);
+            return;
         }
-        sendData(selectedAnswer)
-        setSelectedAnswer('')
-        if (num == 5) {
-            console.log('FINISH')
+        sendData(selectedAnswer);
+        setSelectedAnswer('');
+        if (num === maxNum) {
+            console.log('FINISH');
         } else {
-            console.log('NEXT')
-            navigate(`/test/${num + 1}`, {replace: true})
+            console.log('NEXT');
+            navigate(`/test/${num + 1}`, {replace: true});
         }
     };
 
-    const handleChange = (event) => {
-        setHasError(false)
-        setSelectedAnswer(event.currentTarget.innerText);
-    };
+    const handleChange = (event, value) => {
+        setHasError(false);
+        setSelectedAnswer(value);
+    }
 
     return (
         <Container maxWidth='md' sx={{mt: 1}}>
             <Grid container justifyContent={'space-between'} alignItems={'center'}>
                 <Grid item xs={2}>
                     <Typography variant={'h3'} fontWeight={500}>
-                        {num}/5
+                        {num}/{maxNum}
                     </Typography>
                 </Grid>
                 <Grid item xs={10}>
-                    <Typography variant={'h6'} align={'center'}>
+                    <Typography variant={isMobile ? 'h6' : 'h4'} align={'center'}>
                         {props.question}
                     </Typography>
                 </Grid>
             </Grid>
-            <Stack mt={2} justifyContent={'space-between'} alignItems={'center'}>
+            <Stack mt={2} justifyContent={'space-between'} alignItems={'stretch'}>
                 <img
                     src={city}
                     alt={'Comics'}
                     style={{
                         height: 'auto',
-                        width: '95%',
-                        marginRight: 'auto',
-                        marginLeft: 'auto',
+                        boxSizing: 'border-box',
+                        width: '100%',
                         borderWidth: 8,
                         borderStyle: 'solid',
                         borderImage: 'linear-gradient(180deg, rgba(244,64,148,1) 0%, rgba(85,74,218,1) 100%)',
                         borderImageSlice: 1,
                     }}/>
-                <Stack mt={2} spacing={1}>
-                    {
-                        props.answers.map((el, ix) => {
-                            return el === selectedAnswer ?
-                                <SelectedAnswerButton key={ix}
-                                                      onClick={handleChange}
-                                                      sx={{py: 1}}
-                                >
-                                    {el}
-                                </SelectedAnswerButton>
-                                :
-                                <AnswerButton key={ix}
-                                              onClick={handleChange}
-                                              sx={{py: 1}}
-                                >
-                                    {el}
-                                </AnswerButton>
-                        })
-                    }
-                </Stack>
-                <Box mt={3} textAlign={'center'}>
-                    <Typography color={'error'} hidden={!hasError}>
+                <RadioGroup
+                    defaultValue={''}
+                    onChange={handleChange}
+                >
+                    <Stack mt={1} spacing={1}>
+                        <div/>
+                        {
+                            props.answers.map((el, ix) => {
+                                return el === selectedAnswer ?
+                                    <SelectedRadioControlLabel value={el} label={el} key={ix}/>
+                                    :
+                                    <RadioControlLabel value={el} label={el} key={ix}/>
+                            })
+                        }
+                    </Stack>
+                </RadioGroup>
+                <Box mt={1}>
+                    <Typography color={'error'} align={'center'} hidden={!hasError}>
                         Выберите один из вариантов ответа
                     </Typography>
                     <GoButton variant={'contained'}
                               size={'large'}
+                              fullWidth
                               sx={{mt: 1}}
                               onClick={goNext}
                     >
-                        {num == 5 ? 'Завершить' : 'Далее'}
+                        {num === maxNum ? 'Завершить' : 'Следующий вопрос'}
                     </GoButton>
                 </Box>
             </Stack>
