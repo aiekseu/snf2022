@@ -1,14 +1,4 @@
-import {
-    Container,
-    createTheme, Grid,
-    IconButton,
-    responsiveFontSizes,
-    Slide,
-    Stack,
-    ThemeProvider,
-    Typography,
-    useMediaQuery
-} from "@mui/material";
+import {createTheme, responsiveFontSizes, Stack, ThemeProvider, Typography, useMediaQuery} from "@mui/material";
 import {animated, useSpring} from "react-spring";
 import Countdown from "react-countdown";
 import {useState} from "react";
@@ -18,7 +8,6 @@ import bg from '../images/bg_countdown.jpg'
 import logo from '../images/logo.png'
 import moment from "moment-timezone";
 import NeonButton from "../components/neonButton";
-import CloseIcon from '@mui/icons-material/Close';
 import {useNavigate} from "react-router-dom";
 
 

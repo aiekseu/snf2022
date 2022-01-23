@@ -1,8 +1,14 @@
 import {
-    Card, Container,
-    createTheme, Grid, IconButton,
-    responsiveFontSizes, Slide, Stack,
-    ThemeProvider, Typography,
+    Box,
+    Container,
+    createTheme,
+    Grid,
+    IconButton,
+    responsiveFontSizes,
+    Slide,
+    Stack,
+    ThemeProvider,
+    Typography,
     useMediaQuery
 } from "@mui/material";
 import {animated, useSpring} from "react-spring";
@@ -26,22 +32,22 @@ const ScheduleElement = ({time, activity}) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-        <Grid container justifyContent='center' alignItems='center'>
-            <Grid item xs={6} sx={{textAlign: 'end'}}>
+        <Grid container justifyContent='center' alignItems='start' mt={1}>
+            <Grid item xs={5} sm={4} md={3} sx={{textAlign: 'end'}}>
                 <Typography
                     display='inline'
                     variant='subtitle1'
                     sx={{
                         fontFamily: '"Montserrat", sans-serif',
                         color: '#fff',
-                        marginRight: 4,
+                        marginRight: isMobile ? 2 : 4,
                         textAlign: 'end'
                     }}
                 >
                     {time}
                 </Typography>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={7} sm={8} md={9}>
                 <Typography
                     display='inline'
                     variant='subtitle1'
@@ -124,20 +130,30 @@ const Schedule = () => {
                     SANOFI GENZYME – 24 ЯНВАРЯ 2022
                 </Typography>
             </div>
-            <ScheduleElement time='11:00 - 11:05' activity='Ролик-открытие'/>
-            <ScheduleElement time='11:05 – 11:15' activity='Дэвид Хугазян'/>
+            <ScheduleElement time='11:00 - 11:02' activity='Ролик-открытие'/>
+            <ScheduleElement time='11:02 – 11:05' activity='Приветствие'/>
+            <ScheduleElement time='11:05 – 11:15'
+                             activity='Дэвид Хугазян — Руководитель Санофи Джензайм в регионе Интэрнэшнл и Китай'/>
 
             <BlockTitle blockName='Будущее начинается здесь' blockNum={1}/>
-            <ScheduleElement time='11:15 - 11:22' activity='Сафир Мелан'/>
-            <ScheduleElement time='11:22 – 11:32' activity='Борис Иванченко'/>
-            <ScheduleElement time='11:32 – 11:37' activity='Санг Хи Чо'/>
-            <ScheduleElement time='11:37 – 11:42' activity='Амани Мустафа'/>
-            <ScheduleElement time='11:42 – 11:52' activity='Денис Григорьев'/>
+            <ScheduleElement time='11:15 – 11:22'
+                             activity='Сафир Мелан — Руководитель направления Онкология в регионе Интэрнэшнл и Китай'/>
+            <ScheduleElement time='11:22 – 11:32'
+                             activity='Борис Иванченко — Руководитель направления Онкология и Гематология'/>
+            <ScheduleElement time='11:32 – 11:37'
+                             activity='Санг Хи Чо — Руководитель дерматологического направления Дупиксент в регионе Интэрнэшнл и Китай'/>
+            <ScheduleElement time='11:37 – 11:42'
+                             activity='Амани Мустафа — Руководитель респираторного направления Дупиксент в регионе Интэрнэшнл и Китай'/>
+            <ScheduleElement time='11:42 – 11:52' activity='Денис Григорьев — Руководитель направления Дупиксент'/>
             <ScheduleElement time='11:52 – 11:55' activity='Интерактив'/>
-            <ScheduleElement time='11:55 – 12:05' activity='Медхат Аль-Бейли'/>
-            <ScheduleElement time='12:05 – 12:15' activity='Наталия Бессонова'/>
-            <ScheduleElement time='12:15 – 12:25' activity='Лилия Зиад'/>
-            <ScheduleElement time='12:25 – 12:35' activity='Вера Емельянова'/>
+            <ScheduleElement time='11:55 – 12:05'
+                             activity='Медхат Аль-Бейли — Руководитель направления Редкие заболевания в регионе Интэрнэшнл и Китай'/>
+            <ScheduleElement time='12:05 – 12:15'
+                             activity='Наталия Бессонова — Руководитель направления Редкие заболевания и рассеянный склероз'/>
+            <ScheduleElement time='12:15 – 12:25'
+                             activity='Лилия Зиад — Руководитель медицинского департамента Санофи Джензайм в регионе Интэрнэшнл и Китай'/>
+            <ScheduleElement time='12:25 – 12:35'
+                             activity='Вера Емельянова — Руководитель медицинского отдела Санофи Джензайм Евразийского региона'/>
             <ScheduleElement time='12:35 – 12:45' activity='Перерыв'/>
 
             <BlockTitle blockName='Футурама ток' blockNum={2}/>
@@ -146,13 +162,15 @@ const Schedule = () => {
 
             <BlockTitle blockName='Опережая время' blockNum={3}/>
             <ScheduleElement time='13:10 – 13:13' activity='Интерактив'/>
-            <ScheduleElement time='13:13 – 13:23' activity='Юрий Мочалин'/>
-            <ScheduleElement time='13:23 – 13:30' activity='Наталья Руднева'/>
+            <ScheduleElement time='13:13 – 13:23' activity='Команда по корпоративным связям Евразийского региона'/>
+            <ScheduleElement time='13:23 – 13:30'
+                             activity='Наталья Руднева — Исполняющий обязанности директора по коммерческим операциям и управлению доходами'/>
             <ScheduleElement time='13:30 – 13:33' activity='Интерактив'/>
-            <ScheduleElement time='13:33 – 13:36' activity='Сергей Егоров'/>
-            <ScheduleElement time='13:36 – 13:41' activity='Михаил Кожемякин'/>
-            <ScheduleElement time='13:41 – 13:48' activity='Михаил Суртаев'/>
-            <ScheduleElement time='13:48 – 13:53' activity='Полина Мурзина'/>
+            <ScheduleElement time='13:33 – 13:41'
+                             activity='Сергей Егоров — Руководитель направления диджитал и мультиканального маркетинга и Михаил Кожемякин  — Менеджер по управлению клиентским опытом'/>
+            <ScheduleElement time='13:41 – 13:48' activity='Михаил Суртаев — HR Бизнес-партнер'/>
+            <ScheduleElement time='13:48 – 13:53'
+                             activity='Полина Мурзина — Главный менеджер по соблюдению корпоративных правил и бизнес-этики Евразийского региона'/>
         </Container>
     )
 }
@@ -269,24 +287,33 @@ const MainPage = () => {
                         marginLeft: 'auto',
                         zIndex: 5,
                         textAlign: 'center',
+                        overflowX: 'hidden',
+                        overflowY: 'scroll',
                     }}
+                    className='schedule'
                 >
                     <animated.img
                         src={logo}
                         alt='logo_1'
                         style={{
                             overflow: 'hidden',
-                            width: isMobile ? '80vw' : 'auto',
+                            width: isMobile ? '35vmax' : 'auto',
                             ...logoHeightStyle,
                             ...logoOpacityStyle,
                         }}
                     />
+                    <Box sx={{
+                        height: isMobile ? '15vh' : '24px',
+                        '@media (orientation: landscape)': {
+                            height: 2,
+                        },
+                    }}/>
+
                     <animated.div
                         id='streamIframe'
                         style={{
                             height: isMobile ? '51vw' : '55vh',
                             width: isMobile ? '90vw' : '97vh',
-                            marginTop: isMobile ? '15vh' : 24,
                             marginRight: 'auto',
                             marginLeft: 'auto',
                             background: '#2c2c2c',
@@ -325,12 +352,12 @@ const MainPage = () => {
                                     allow="autoplay; fullscreen" 
                                     allowFullScreen></iframe>`
                             }}/>
-
                     </animated.div>
-                    <div style={{height: 24}}/>
-                    <div style={{visibility: isScheduleOpen ? 'hidden' : 'visible',}}>
+                    <div style={{height: 32}}/>
+                    <animated.div style={{visibility: isScheduleOpen ? 'hidden' : 'visible', ...streamStyle,}}>
                         <NeonButton text='показать программу' onClick={() => setIsScheduleOpen(true)}/>
-                    </div>
+                    </animated.div>
+
                 </div>
                 <Slide in={isScheduleOpen} direction='up' mountOnEnter unmountOnExit>
                     <div

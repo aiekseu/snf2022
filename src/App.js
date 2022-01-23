@@ -1,18 +1,18 @@
 import MainPage from "./pages/mainPage";
 import TestPage from "./pages/testPage";
 import CountdownPage from "./pages/countdownPage";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 
 const App = () => {
 
     return (
-        <BrowserRouter basename={process.env.PUBLIC_URL}>
+        <HashRouter >
             <Routes>
-                <Route exact path="" element={<CountdownPage/>}/>
+                <Route exact path="" element={<MainPage/>}/>
                 <Route path="/stream" element={<MainPage/>}/>
                 <Route path="/test/:num" element={<TestPage/>}/>
             </Routes>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
