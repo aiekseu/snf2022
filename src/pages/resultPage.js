@@ -123,37 +123,39 @@ const ResultPage = () => {
                                   }}
                     />
                 </Box>
-                <Comics/>
+                <Container maxWidth='md' sx={{mt: 2}}>
+                    <Grid container columns={19} rowSpacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
+                        <Grid item xs={10}>
+                            <Frame aspectRatio={"5/3"} background={city}/>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Frame aspectRatio={"4/3"} background={city}/>
+                        </Grid>
+                        <Grid item xs={19}>
+                            <Frame aspectRatio={"19/6"} background={city}/>
+                        </Grid>
+                        <Grid item xs={8}>
+                            <Frame aspectRatio={"4/3"} background={city}/>
+                        </Grid>
+                        <Grid item xs={10}>
+                            <Frame aspectRatio={"5/3"} background={city}/>
+                        </Grid>
+                    </Grid>
+                </Container>
             </Box>
         </ThemeProvider>
     );
 }
 
 
-const Comics = (props) => {
+const Frame = ({aspectRatio, background}) => {
 
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
     return (
-        <Container maxWidth='md' sx={{mt: 1}}>
-            <Grid container columns={19} rowSpacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
-                <Grid item xs={10}>
-                    <Background style={{aspectRatio: "5/3", backgroundImage: `url(${city})`}}/>
-                </Grid>
-                <Grid item xs={8}>
-                    <Background style={{aspectRatio: "4/3", backgroundImage: `url(${city})`}}/>
-                </Grid>
-                <Grid item xs={19}>
-                    <Background style={{aspectRatio: "19/6", backgroundImage: `url(${city})`}}/>
-                </Grid>
-                <Grid item xs={8}>
-                    <Background style={{aspectRatio: "4/3", backgroundImage: `url(${city})`}}/>
-                </Grid>
-                <Grid item xs={10}>
-                    <Background style={{aspectRatio: "5/3", backgroundImage: `url(${city})`}}/>
-                </Grid>
-            </Grid>
-        </Container>
+        <Background style={{aspectRatio: aspectRatio, backgroundImage: `url(${background})`}}>
+
+        </Background>
     )
 }
 
