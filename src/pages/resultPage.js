@@ -1,19 +1,23 @@
+import {Fragment} from "react";
 import {
+    Button,
     Container,
     createTheme,
     Grid,
-    responsiveFontSizes,
+    responsiveFontSizes, Stack,
     ThemeProvider,
     Typography,
     useMediaQuery
 } from "@mui/material";
 import {animated, useSpring} from "react-spring";
+import {Box, styled} from "@mui/system";
 
 import bg from '../images/bg_questions.jpg'
 import city from '../images/city-min.png'
 import logo from '../images/logo.png'
-import {Box, styled} from "@mui/system";
-import {Fragment} from "react";
+
+import DownloadIcon from '@mui/icons-material/Download';
+import ShareIcon from '@mui/icons-material/Share';
 
 
 const DisplayOver = styled(Box)(({theme}) => ({
@@ -56,23 +60,113 @@ const Background = styled(Box)({
     borderImageSlice: 1,
 });
 
+const ActionButton = styled(Button)(({theme}) => ({
+    borderRadius: 3,
+    background: '#5b053d',
+    paddingLeft: 8,
+    paddingRight: 8,
+    paddingTop: 4,
+    paddingBottom: 4,
+    whiteSpace: 'nowrap',
+    textTransform: 'none',
+    boxShadow: "0px 0px 6px 0px rgba(255, 255, 255, 0.6)",
+    '&:hover': {
+        borderColor: '#5b053d',
+        backgroundColor: 'rgb(119,2,78)',
+        borderWidth: 4,
+        boxShadow: "0px 0px 10px 0px rgba(162, 1, 105, 0.9)",
+    },
+}));
+
 
 const questions = [
     {
         num: 1,
-        question: 'Где будете искать информацию?',
+        question: 'На чем вы отправитесь?',
         answers: [
             {
                 votes: 3,
-                text: 'На Википедии'
+                text: 'Сверхзвуковая карета скорой помощи. Противозаконно, но быстро'
             },
             {
                 votes: 7,
-                text: 'В Библиотеке знаний всего мира Санофи'
+                text: 'ВАЗ 2111. Проверено временем, но сомнительно'
             },
             {
                 votes: 5,
-                text: 'Просто спросить у Си Джея'
+                text: 'Едем тестировать созданные командами машины'
+            }
+        ]
+    },
+    {
+        num: 2,
+        question: 'Какой сверх режим вы выбираете?',
+        answers: [
+            {
+                votes: 3,
+                text: 'Режим невидимости, никто нас не заметит, главное самим не потеряться'
+            },
+            {
+                votes: 7,
+                text: 'Режим безлимитного питания'
+            },
+            {
+                votes: 5,
+                text: 'Режим сверхбыстрого прыжка из точки А в точку Б'
+            }
+        ]
+    },
+    {
+        num: 3,
+        question: 'Вы приземлились днём на незнакомой планете в поисках необходимого вещества. Что будете делать?',
+        answers: [
+            {
+                votes: 3,
+                text: 'Без раздумий отправимся на поиски вещества'
+            },
+            {
+                votes: 7,
+                text: 'Подготовим набор первой необходимости, разведаем обстановку экологического и биологического характера, и отправимся в путь ночью'
+            },
+            {
+                votes: 5,
+                text: 'Подготовим базовый набор и без разведки отправимся днём на поиски'
+            }
+        ]
+    },
+    {
+        num: 4,
+        question: 'Кто возглавит операцию?',
+        answers: [
+            {
+                votes: 3,
+                text: 'Лунтик'
+            },
+            {
+                votes: 7,
+                text: 'Елена Малышева'
+            },
+            {
+                votes: 5,
+                text: 'Дэвид Хугазян'
+            }
+        ]
+    },
+    {
+        num: 5,
+        question: '',
+        answers: [
+            {
+                votes: 3,
+                text: ''
+            },
+            {
+                votes: 7,
+                text: ''
+            },
+            {
+                votes: 5,
+                text: ''
             }
         ]
     },
@@ -122,7 +216,7 @@ const ResultPage = () => {
                     }
                 }
             },
-        }
+        },
     });
     theme = responsiveFontSizes(theme);
 
@@ -136,13 +230,13 @@ const ResultPage = () => {
     const transformedQuestions = transform(questions)
 
     return (
-        <ThemeProvider theme={theme}>
+        <ThemeProvider theme={theme} style={{height: '100%'}}>
             <Box pb={4}
                  style={{
-                     minHeight: '100vh',
+                     minHeight: '100%',
                      backgroundImage: `url(${bg})`,
                      backgroundPosition: 'center top',
-                     backgroundRepeat: 'repeat-x',
+                     backgroundRepeat: 'repeat',
                  }}
             >
                 <Box textAlign={'center'}>
@@ -157,23 +251,36 @@ const ResultPage = () => {
                     />
                 </Box>
                 <Container maxWidth='md' sx={{mt: 2}}>
-                    <Grid container columns={19} rowSpacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
-                        <Grid item xs={10}>
+                    <Grid container columns={19} rowSpacing={2} columnSpacing={0} justifyContent={'space-between'}
+                          alignItems={'stretch'}>
+                        <Grid item xs={19} md={10}>
                             <Frame aspectRatio={"5/3"} background={city} question={transformedQuestions[0]}/>
                         </Grid>
-                        {/*<Grid item xs={8}>*/}
-                        {/*    <Frame aspectRatio={"4/3"} background={city}/>*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item xs={19}>*/}
-                        {/*    <Frame aspectRatio={"19/6"} background={city}/>*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item xs={8}>*/}
-                        {/*    <Frame aspectRatio={"4/3"} background={city}/>*/}
-                        {/*</Grid>*/}
-                        {/*<Grid item xs={10}>*/}
-                        {/*    <Frame aspectRatio={"5/3"} background={city}/>*/}
-                        {/*</Grid>*/}
+                        <Grid item xs={19} md={8}>
+                            <Frame aspectRatio={"4/3"} background={city} question={transformedQuestions[1]}/>
+                        </Grid>
+                        <Grid item xs={19} md={19}>
+                            <Frame aspectRatio={"19/6"} background={city} question={transformedQuestions[2]}/>
+                        </Grid>
+                        <Grid item xs={19} md={8}>
+                            <Frame aspectRatio={"4/3"} background={city} question={transformedQuestions[3]}/>
+                        </Grid>
+                        <Grid item xs={19} md={10}>
+                            <Frame aspectRatio={"5/3"} background={city} question={transformedQuestions[4]}/>
+                        </Grid>
                     </Grid>
+                    <Stack justifyContent={'end'} direction={'row'} spacing={2} mt={2}>
+                        <ActionButton endIcon={<ShareIcon sx={{color: '#fff', height: 32, width: 32, pr: 1}}/>}>
+                            <Typography variant={'h5'} pl={1} pr={0.5} py={0.5}>
+                                поделиться
+                            </Typography>
+                        </ActionButton>
+                        <ActionButton endIcon={<DownloadIcon sx={{color: '#fff', height: 32, width: 32, pr: 1}}/>}>
+                            <Typography variant={'h5'} pl={2} pr={1} py={0.5}>
+                                сохранить
+                            </Typography>
+                        </ActionButton>
+                    </Stack>
                 </Container>
             </Box>
         </ThemeProvider>
@@ -185,7 +292,12 @@ const Frame = ({aspectRatio, background, question}) => {
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
     return (
-        <Background style={{aspectRatio: aspectRatio, backgroundImage: `url(${background})`}}>
+        <Background
+            style={{
+                aspectRatio: aspectRatio,
+                backgroundImage: `url(${background})`,
+            }}
+        >
             <DisplayOver>
                 <Hover style={{textAlign: 'center'}}>
                     <Grid container
@@ -214,12 +326,12 @@ const Frame = ({aspectRatio, background, question}) => {
                                         <Grid item xs={18}>
                                             <Typography variant={'body1'}
                                                         align={'left'}
-                                                        fontSize={'1.12rem'}
+
                                                         lineHeight={'1.25em'}
                                                         fontWeight={500}
                                                         color={'#ffa9d1'}
                                             >
-                                                {el.text[0].toLowerCase() + el.text.slice(1)}
+                                                {el.text[0] + el.text.slice(1)}
                                             </Typography>
                                         </Grid>
                                     </Fragment>

@@ -205,9 +205,10 @@ const Question = (props) => {
         setSelectedAnswer('');
         if (num === maxNum) {
             console.log('FINISH');
+            navigate('/result', {replace: true});
         } else {
             console.log('NEXT');
-            navigate(`/test/${num + 1}`, {replace: true});
+            navigate(`/test/${num + 1}`);
         }
     };
 
