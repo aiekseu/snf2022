@@ -14,12 +14,16 @@ import {animated, useSpring} from "react-spring";
 import {Box, styled} from "@mui/system";
 
 import bg from '../images/bg_questions.jpg'
-import city from '../images/city-min.png'
 import logo from '../images/logo.png'
 
 import DownloadIcon from '@mui/icons-material/Download';
-import ShareIcon from '@mui/icons-material/Share';
 import {Axios} from "axios-observable";
+import frame_1 from "../images/frame_1.jpg";
+import frame_2 from "../images/frame_2.jpg";
+import frame_3 from "../images/frame_3.jpg";
+import frame_4 from "../images/frame_4.jpg";
+import frame_5 from "../images/frame_5.jpg";
+import comics_final from "../images/comics_final.JPG";
 
 
 const DisplayOver = styled(Box)(({theme}) => ({
@@ -34,7 +38,7 @@ const DisplayOver = styled(Box)(({theme}) => ({
     padding: theme.spacing(2),
     boxSizing: "border-box",
     ['&:hover']: {
-        backgroundColor: "rgba(0,0,0,0.4)",
+        backgroundColor: "rgba(0,0,0,0.7)",
     },
     ['&:hover :first-of-type']: {
         opacity: 1,
@@ -71,7 +75,7 @@ const ActionButton = styled(Button)(({theme}) => ({
     paddingBottom: theme.spacing(0.5),
     whiteSpace: 'nowrap',
     textTransform: 'none',
-    boxShadow: "0px 0px 6px 0px rgba(255, 255, 255, 0.6)",
+    boxShadow: "0px 0px 6px 0px rgba(162, 1, 105, 0.6)",
     '&:hover': {
         borderColor: '#5b053d',
         backgroundColor: 'rgb(119,2,78)',
@@ -224,6 +228,8 @@ const ResultPage = () => {
     });
     theme = responsiveFontSizes(theme);
 
+    const comicsPages = [frame_1, frame_2, frame_3, frame_4, frame_5];
+
     const logoOpacityStyle = useSpring({
         from: {opacity: 0,},
         to: {opacity: 1,},
@@ -246,7 +252,7 @@ const ResultPage = () => {
         <ThemeProvider theme={theme}>
             <Box pb={4}
                  style={{
-                     minHeight: '100%',
+                     minHeight: '100vh',
                      backgroundImage: `url(${bg})`,
                      backgroundPosition: 'center top',
                      backgroundRepeat: 'repeat',
@@ -269,32 +275,43 @@ const ResultPage = () => {
                             questions.length &&
                             <>
                                 <Grid item xs={19} md={10}>
-                                    <Frame aspectRatio={"5/3"} background={city} question={questions[0]}/>
+                                    <Frame aspectRatio={"5/3"} background={comicsPages[0]} question={questions[0]}/>
                                 </Grid>
                                 <Grid item xs={19} md={8}>
-                                    <Frame aspectRatio={"4/3"} background={city} question={questions[1]}/>
+                                    <Frame aspectRatio={"4/3"} background={comicsPages[1]} question={questions[1]}/>
                                 </Grid>
                                 <Grid item xs={19} md={19}>
-                                    <Frame aspectRatio={"19/6"} background={city} question={questions[2]}/>
+                                    <Frame aspectRatio={"19/6"} background={comicsPages[2]} question={questions[2]}/>
                                 </Grid>
                                 <Grid item xs={19} md={8}>
-                                    <Frame aspectRatio={"4/3"} background={city} question={questions[3]}/>
+                                    <Frame aspectRatio={"4/3"} background={comicsPages[3]} question={questions[3]}/>
                                 </Grid>
                                 <Grid item xs={19} md={10}>
-                                    <Frame aspectRatio={"5/3"} background={city} question={questions[4]}/>
+                                    <Frame aspectRatio={"5/3"} background={comicsPages[4]} question={questions[4]}/>
                                 </Grid>
                             </>
                         }
                     </Grid>
                     <Stack justifyContent={'end'} direction={'row'} spacing={2} mt={3}>
-                        <ActionButton endIcon={<ShareIcon sx={{color: '#fff', height: 32, width: 32, pr: 1}}/>}>
-                            <Typography variant={'h5'} pl={1} pr={0.5} py={0.5}>
-                                Поделиться
-                            </Typography>
-                        </ActionButton>
-                        <ActionButton endIcon={<DownloadIcon sx={{color: '#fff', height: 32, width: 32, pr: 1}}/>}>
+                        <ActionButton
+                            endIcon={<DownloadIcon sx={{color: '#fff', height: 32, width: 32, pr: 1}}/>}
+                            onClick={() => {
+                                const anchor = document.createElement('a');
+                                anchor.href = comics_final;
+                                anchor.download = 'comics_sanofi';
+
+                                // Append to the DOM
+                                document.body.appendChild(anchor);
+
+                                // Trigger `click` event
+                                anchor.click();
+
+                                // Remove element from DOM
+                                document.body.removeChild(anchor);
+                            }}
+                        >
                             <Typography variant={'h5'} pl={2} pr={1} py={0.5}>
-                                Сохранить
+                                сохранить
                             </Typography>
                         </ActionButton>
                     </Stack>

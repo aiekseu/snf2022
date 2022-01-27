@@ -2,6 +2,10 @@
     font-family:'digital-clock-font';
     src: url('../fonts/dsDigits.ttf');
 }
+@font-face{
+    font-family:'govno-kakoeto';
+    src: url('../fonts/PFBeauSansPro-Book.ttf');
+}
 
 .underline:after {
     content: "";

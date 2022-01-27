@@ -13,15 +13,19 @@ import {
     useMediaQuery
 } from "@mui/material";
 import {animated, useSpring} from "react-spring";
-
-import bg from '../images/bg_questions.jpg'
-import city from '../images/city-min.png'
-import logo from '../images/logo.png'
 import {useNavigate, useParams} from "react-router-dom";
 import {Box, styled} from "@mui/system";
 import {useState} from "react";
 import {questions} from "../data/questions";
 import {Axios} from "axios-observable";
+
+import bg from '../images/bg_questions.jpg'
+import logo from '../images/logo.png'
+import frame_1 from '../images/frame_1.jpg';
+import frame_2 from '../images/frame_2.jpg';
+import frame_3 from '../images/frame_3.jpg';
+import frame_4 from '../images/frame_4.jpg';
+import frame_5 from '../images/frame_5.jpg';
 
 
 const StyledRadio = styled((props) => <Radio size={'small'} {...props}/>)(() => ({
@@ -159,6 +163,7 @@ const MobileQuestion = ({num, question}) => {
     const [answerId, setAnswerId] = useState(-1);
     const [hasError, setHasError] = useState(false);
 
+    const comicsPages = [frame_1, frame_2, frame_3, frame_4, frame_5];
     num = parseInt(num);
 
     let navigate = useNavigate();
@@ -172,7 +177,7 @@ const MobileQuestion = ({num, question}) => {
         setAnswerId(-1);
         if (isLastQuestion(num)) {
             console.log('FINISH');
-            navigate('/result', {replace: true});
+            navigate('/final', {replace: true});
         } else {
             console.log('NEXT');
             navigate(`/test/${num + 1}`, {replace: true});
@@ -201,7 +206,7 @@ const MobileQuestion = ({num, question}) => {
             </Typography>
             <Stack mt={2} justifyContent={'space-between'} alignItems={'stretch'}>
                 <img
-                    src={city}
+                    src={comicsPages[num-1]}
                     alt={'Comics'}
                     style={{
                         height: 'auto',
@@ -241,7 +246,7 @@ const MobileQuestion = ({num, question}) => {
                               sx={{mt: isLastQuestion(num) ? 0 : 1}}
                               onClick={goNext}
                     >
-                        {isLastQuestion(num) ? 'Завершить' : 'Следующий вопрос'}
+                        {isLastQuestion(num) ? 'Продолжить' : 'Следующий вопрос'}
                     </GoButton>
                 </Box>
             </Stack>
@@ -253,6 +258,7 @@ const Question = ({num, question}) => {
     const [answerId, setAnswerId] = useState(-1);
     const [hasError, setHasError] = useState(false);
 
+    const comicsPages = [frame_1, frame_2, frame_3, frame_4, frame_5];
     num = parseInt(num);
 
     let navigate = useNavigate();
@@ -266,7 +272,7 @@ const Question = ({num, question}) => {
         setAnswerId(-1);
         if (isLastQuestion(num)) {
             console.log('FINISH');
-            navigate('/result', {replace: true});
+            navigate('/final', {replace: true});
         } else {
             console.log('NEXT');
             navigate(`/test/${num + 1}`, {replace: true});
@@ -279,7 +285,7 @@ const Question = ({num, question}) => {
     }
 
     return (
-        <Container maxWidth={'lg'} sx={{mt: 1}}>
+        <Container maxWidth={isWideQuestion(num) || isLastQuestion(num) ? 'md' : 'lg'} sx={{mt: 1}}>
             <Grid container justifyContent={'space-between'} alignItems={'center'}>
                 <Grid item xs={2}>
                     <Typography variant={'h2'} fontWeight={500}>
@@ -292,10 +298,10 @@ const Question = ({num, question}) => {
                     </Typography>
                 </Grid>
             </Grid>
-            <Grid container mt={0} spacing={4} justifyContent={'space-between'} alignItems={'center'}>
-                <Grid item xs={6} md={isWideQuestion(num) || isLastQuestion(num) ? 12 : null} my={0}>
+            <Grid container mt={0} spacing={4} justifyContent={'center'} alignItems={'center'}>
+                <Grid item xs={6} md={isWideQuestion(num) || isLastQuestion(num) ? 9 : null} my={0}>
                     <img
-                        src={city}
+                        src={comicsPages[num-1]}
                         alt={'Comics'}
                         style={{
                             height: 'auto',
@@ -338,7 +344,7 @@ const Question = ({num, question}) => {
                                   sx={{mt: isLastQuestion(num) ? 0 : 1, px: 20}}
                                   onClick={goNext}
                         >
-                            {isLastQuestion(num) ? 'Завершить' : 'Следующий вопрос'}
+                            {isLastQuestion(num) ? 'Продолжить' : 'Следующий вопрос'}
                         </GoButton>
                     </Box>
                 </Grid>
