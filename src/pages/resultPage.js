@@ -1,10 +1,11 @@
-import {Fragment} from "react";
+import {Fragment, useEffect, useState} from "react";
 import {
     Button,
     Container,
     createTheme,
     Grid,
-    responsiveFontSizes, Stack,
+    responsiveFontSizes,
+    Stack,
     ThemeProvider,
     Typography,
     useMediaQuery
@@ -18,6 +19,7 @@ import logo from '../images/logo.png'
 
 import DownloadIcon from '@mui/icons-material/Download';
 import ShareIcon from '@mui/icons-material/Share';
+import {Axios} from "axios-observable";
 
 
 const DisplayOver = styled(Box)(({theme}) => ({
@@ -63,10 +65,10 @@ const Background = styled(Box)({
 const ActionButton = styled(Button)(({theme}) => ({
     borderRadius: 3,
     background: '#5b053d',
-    paddingLeft: 8,
-    paddingRight: 8,
-    paddingTop: 4,
-    paddingBottom: 4,
+    paddingLeft: theme.spacing(1),
+    paddingRight: theme.spacing(1),
+    paddingTop: theme.spacing(0.5),
+    paddingBottom: theme.spacing(0.5),
     whiteSpace: 'nowrap',
     textTransform: 'none',
     boxShadow: "0px 0px 6px 0px rgba(255, 255, 255, 0.6)",
@@ -79,127 +81,129 @@ const ActionButton = styled(Button)(({theme}) => ({
 }));
 
 
-const questions = [
-    {
-        num: 1,
-        question: 'На чем вы отправитесь?',
-        answers: [
-            {
-                votes: 3,
-                text: 'Сверхзвуковая карета скорой помощи. Противозаконно, но быстро'
-            },
-            {
-                votes: 7,
-                text: 'ВАЗ 2111. Проверено временем, но сомнительно'
-            },
-            {
-                votes: 5,
-                text: 'Едем тестировать созданные командами машины'
-            }
-        ]
-    },
-    {
-        num: 2,
-        question: 'Какой сверх режим вы выбираете?',
-        answers: [
-            {
-                votes: 3,
-                text: 'Режим невидимости, никто нас не заметит, главное самим не потеряться'
-            },
-            {
-                votes: 7,
-                text: 'Режим безлимитного питания'
-            },
-            {
-                votes: 5,
-                text: 'Режим сверхбыстрого прыжка из точки А в точку Б'
-            }
-        ]
-    },
-    {
-        num: 3,
-        question: 'Вы приземлились днём на незнакомой планете в поисках необходимого вещества. Что будете делать?',
-        answers: [
-            {
-                votes: 3,
-                text: 'Без раздумий отправимся на поиски вещества'
-            },
-            {
-                votes: 7,
-                text: 'Подготовим набор первой необходимости, разведаем обстановку экологического и биологического характера, и отправимся в путь ночью'
-            },
-            {
-                votes: 5,
-                text: 'Подготовим базовый набор и без разведки отправимся днём на поиски'
-            }
-        ]
-    },
-    {
-        num: 4,
-        question: 'Кто возглавит операцию?',
-        answers: [
-            {
-                votes: 3,
-                text: 'Лунтик'
-            },
-            {
-                votes: 7,
-                text: 'Елена Малышева'
-            },
-            {
-                votes: 5,
-                text: 'Дэвид Хугазян'
-            }
-        ]
-    },
-    {
-        num: 5,
-        question: '',
-        answers: [
-            {
-                votes: 3,
-                text: ''
-            },
-            {
-                votes: 7,
-                text: ''
-            },
-            {
-                votes: 5,
-                text: ''
-            }
-        ]
-    },
-];
+// const questions = [
+//     {
+//         num: 1,
+//         question: 'На чем вы отправитесь?',
+//         answers: [
+//             {
+//                 votes: 3,
+//                 text: 'Сверхзвуковая карета скорой помощи. Противозаконно, но быстро'
+//             },
+//             {
+//                 votes: 7,
+//                 text: 'ВАЗ 2111. Проверено временем, но сомнительно'
+//             },
+//             {
+//                 votes: 5,
+//                 text: 'Едем тестировать созданные командами машины'
+//             }
+//         ]
+//     },
+//     {
+//         num: 2,
+//         question: 'Какой сверх режим вы выбираете?',
+//         answers: [
+//             {
+//                 votes: 3,
+//                 text: 'Режим невидимости, никто нас не заметит, главное самим не потеряться'
+//             },
+//             {
+//                 votes: 7,
+//                 text: 'Режим безлимитного питания'
+//             },
+//             {
+//                 votes: 5,
+//                 text: 'Режим сверхбыстрого прыжка из точки А в точку Б'
+//             }
+//         ]
+//     },
+//     {
+//         num: 3,
+//         question: 'Вы приземлились днём на незнакомой планете в поисках необходимого вещества. Что будете делать?',
+//         answers: [
+//             {
+//                 votes: 3,
+//                 text: 'Без раздумий отправимся на поиски вещества'
+//             },
+//             {
+//                 votes: 7,
+//                 text: 'Подготовим набор первой необходимости, разведаем обстановку экологического и биологического характера, и отправимся в путь ночью'
+//             },
+//             {
+//                 votes: 5,
+//                 text: 'Подготовим базовый набор и без разведки отправимся днём на поиски'
+//             }
+//         ]
+//     },
+//     {
+//         num: 4,
+//         question: 'Кто возглавит операцию?',
+//         answers: [
+//             {
+//                 votes: 3,
+//                 text: 'Лунтик'
+//             },
+//             {
+//                 votes: 7,
+//                 text: 'Елена Малышева'
+//             },
+//             {
+//                 votes: 5,
+//                 text: 'Дэвид Хугазян'
+//             }
+//         ]
+//     },
+//     {
+//         num: 5,
+//         question: '',
+//         answers: [
+//             {
+//                 votes: 3,
+//                 text: ''
+//             },
+//             {
+//                 votes: 7,
+//                 text: ''
+//             },
+//             {
+//                 votes: 5,
+//                 text: ''
+//             }
+//         ]
+//     },
+// ];
 
-function transform(questions) {
-    const output = [];
-    for (const question of questions) {
-        const sumVotes = question.answers.reduce((a, ans) => a + ans.votes, 0);
-        const percentageAnswers = [];
-        let rest = 0;
-        for (const [ix, answer] of question.answers.entries()) {
-            if (ix !== question.answers.length - 1) {
-                const p = Math.round(answer.votes / sumVotes * 100);
-                rest += p;
-                percentageAnswers.push({
-                    percentage: p,
-                    text: answer.text
-                });
-            } else {
-                percentageAnswers.push({
-                    percentage: 100 - rest,
-                    text: answer.text
-                });
-            }
-        }
-        output.push({
-            ...question,
-            answers: percentageAnswers
-        });
-    }
-    return output;
-}
+// const questions = questionsS
+//
+// function transform(questions) {
+//     const output = [];
+//     for (const question of questions) {
+//         const sumVotes = question.answers.reduce((a, ans) => a + ans.votes, 0);
+//         const percentageAnswers = [];
+//         let rest = 0;
+//         for (const [ix, answer] of question.answers.entries()) {
+//             if (ix !== question.answers.length - 1) {
+//                 const p = Math.round(answer.votes / sumVotes * 100) || 1;
+//                 rest += p;
+//                 percentageAnswers.push({
+//                     percentage: p,
+//                     text: answer.text
+//                 });
+//             } else {
+//                 percentageAnswers.push({
+//                     percentage: 100 - rest,
+//                     text: answer.text
+//                 });
+//             }
+//         }
+//         output.push({
+//             ...question,
+//             answers: percentageAnswers
+//         });
+//     }
+//     return output;
+// }
 
 const ResultPage = () => {
 
@@ -227,10 +231,19 @@ const ResultPage = () => {
         config: {duration: 1500}
     });
 
-    const transformedQuestions = transform(questions)
+    const [questions, setQuestions] = useState([])
+
+    useEffect(() => {
+        Axios.get('https://sanofi-genzyme.herokuapp.com/api/questions/')
+            .subscribe({
+                next: (response) => setQuestions(response.data),
+                error: (err) => alert(err)
+            });
+    }, []);
+
 
     return (
-        <ThemeProvider theme={theme} style={{height: '100%'}}>
+        <ThemeProvider theme={theme}>
             <Box pb={4}
                  style={{
                      minHeight: '100%',
@@ -251,33 +264,37 @@ const ResultPage = () => {
                     />
                 </Box>
                 <Container maxWidth='md' sx={{mt: 2}}>
-                    <Grid container columns={19} rowSpacing={2} columnSpacing={0} justifyContent={'space-between'}
-                          alignItems={'stretch'}>
-                        <Grid item xs={19} md={10}>
-                            <Frame aspectRatio={"5/3"} background={city} question={transformedQuestions[0]}/>
-                        </Grid>
-                        <Grid item xs={19} md={8}>
-                            <Frame aspectRatio={"4/3"} background={city} question={transformedQuestions[1]}/>
-                        </Grid>
-                        <Grid item xs={19} md={19}>
-                            <Frame aspectRatio={"19/6"} background={city} question={transformedQuestions[2]}/>
-                        </Grid>
-                        <Grid item xs={19} md={8}>
-                            <Frame aspectRatio={"4/3"} background={city} question={transformedQuestions[3]}/>
-                        </Grid>
-                        <Grid item xs={19} md={10}>
-                            <Frame aspectRatio={"5/3"} background={city} question={transformedQuestions[4]}/>
-                        </Grid>
+                    <Grid container columns={19} rowSpacing={2} justifyContent={'space-between'} alignItems={'stretch'}>
+                        {
+                            questions.length &&
+                            <>
+                                <Grid item xs={19} md={10}>
+                                    <Frame aspectRatio={"5/3"} background={city} question={questions[0]}/>
+                                </Grid>
+                                <Grid item xs={19} md={8}>
+                                    <Frame aspectRatio={"4/3"} background={city} question={questions[1]}/>
+                                </Grid>
+                                <Grid item xs={19} md={19}>
+                                    <Frame aspectRatio={"19/6"} background={city} question={questions[2]}/>
+                                </Grid>
+                                <Grid item xs={19} md={8}>
+                                    <Frame aspectRatio={"4/3"} background={city} question={questions[3]}/>
+                                </Grid>
+                                <Grid item xs={19} md={10}>
+                                    <Frame aspectRatio={"5/3"} background={city} question={questions[4]}/>
+                                </Grid>
+                            </>
+                        }
                     </Grid>
-                    <Stack justifyContent={'end'} direction={'row'} spacing={2} mt={2}>
+                    <Stack justifyContent={'end'} direction={'row'} spacing={2} mt={3}>
                         <ActionButton endIcon={<ShareIcon sx={{color: '#fff', height: 32, width: 32, pr: 1}}/>}>
                             <Typography variant={'h5'} pl={1} pr={0.5} py={0.5}>
-                                поделиться
+                                Поделиться
                             </Typography>
                         </ActionButton>
                         <ActionButton endIcon={<DownloadIcon sx={{color: '#fff', height: 32, width: 32, pr: 1}}/>}>
                             <Typography variant={'h5'} pl={2} pr={1} py={0.5}>
-                                сохранить
+                                Сохранить
                             </Typography>
                         </ActionButton>
                     </Stack>
@@ -289,7 +306,9 @@ const ResultPage = () => {
 
 
 const Frame = ({aspectRatio, background, question}) => {
+
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
+    question.answers.sort((a, b) => parseInt(b.percentage) - parseInt(a.percentage))
 
     return (
         <Background
@@ -316,8 +335,8 @@ const Frame = ({aspectRatio, background, question}) => {
                                                         fontFamily={'digital-clock-font'}
                                                         style={{
                                                             background: "linear-gradient(180deg, rgb(255,66,154) 0%, rgb(91,78,230) 100%)",
-                                                            webkitBackgroundClip: "text",
-                                                            webkitTextFillColor: "transparent",
+                                                            WebkitBackgroundClip: "text",
+                                                            WebkitTextFillColor: "transparent",
                                                         }}
                                             >
                                                 {el.percentage}%
@@ -326,12 +345,12 @@ const Frame = ({aspectRatio, background, question}) => {
                                         <Grid item xs={18}>
                                             <Typography variant={'body1'}
                                                         align={'left'}
-
+                                                        fontSize={isMobile ? '1rem' : '1.12rem'} // НЕ УДАЛЯТЬ
                                                         lineHeight={'1.25em'}
                                                         fontWeight={500}
                                                         color={'#ffa9d1'}
                                             >
-                                                {el.text[0] + el.text.slice(1)}
+                                                {el.res_text}
                                             </Typography>
                                         </Grid>
                                     </Fragment>

@@ -20,6 +20,8 @@ import logo from '../images/logo.png'
 import {useNavigate, useParams} from "react-router-dom";
 import {Box, styled} from "@mui/system";
 import {useState} from "react";
+import {questions} from "../data/questions";
+import {Axios} from "axios-observable";
 
 
 const StyledRadio = styled((props) => <Radio size={'small'} {...props}/>)(() => ({
@@ -69,56 +71,6 @@ const GoButton = styled(Button)(({theme}) => ({
         background: '#860068',
     }
 }));
-
-
-const questions = [
-    {
-        num: 1,
-        question: 'Где будете искать информацию?',
-        answers: [
-            'На Википедии',
-            'В Библиотеке знаний всего мира Санофи',
-            'Просто спросить у Си Джея'
-        ]
-    },
-    {
-        num: 2,
-        question: 'На чем вы отправитесь?',
-        answers: [
-            'Сверхзвуковая карета скорой помощи. Противозаконно, но быстро',
-            'ВАЗ 2111. Проверено временем, но сомнительно',
-            'Протестируем созданные командами кары'
-        ]
-    },
-    {
-        num: 3,
-        question: 'Какой сверхрежим вы выбираете?',
-        answers: [
-            'Режим невидимости. Никто нас не заметит, главное самим не потеряться',
-            'Режим безлимитного питания',
-            'Режим встроенного караоке'
-        ]
-    },
-    {
-        num: 4,
-        question: 'Вы приземлились на незнакомой планете. Что будете делать?',
-        answers: [
-            'Без раздумий отправиться на поиски вещества',
-            'Подготовить набор первой необходимости, разведать обстановку экологического и биологического ' +
-            'характера и отправиться в путь ночью',
-            'Подготовить базовый набор и без разведки отправиться днём на поиски'
-        ]
-    },
-    {
-        num: 5,
-        question: 'Кто возглавит операцию?',
-        answers: [
-            'Лунтик',
-            'Елена Малышева',
-            'Дэвид Хугазян'
-        ]
-    },
-];
 
 
 const TestPage = () => {
@@ -182,8 +134,7 @@ const TestPage = () => {
 
 
 const Question = (props) => {
-    // TODO || В будущем вместо сравнения тела ответа будет id ответа
-    const [selectedAnswer, setSelectedAnswer] = useState('');
+    const [answerId, setAnswerId] = useState(-1);
     const [hasError, setHasError] = useState(false);
 
     let num = parseInt(props.num);
@@ -192,29 +143,31 @@ const Question = (props) => {
     let navigate = useNavigate();
     const isMobile = useMediaQuery((theme) => theme.breakpoints.down('md'));
 
-    const sendData = (answer) => {
-        console.log(`Send >>> [${answer}]`);
+    const sendData = (id) => {
+        console.log(`Send >>> [${id}]`);
+        Axios.get(`https://sanofi-genzyme.herokuapp.com/api/answers/${id}/vote`)
+            .subscribe((res) => console.log(res.data));
     };
 
     const goNext = () => {
-        if (selectedAnswer.length === 0) {
+        if (answerId === -1) {
             setHasError(true);
             return;
         }
-        sendData(selectedAnswer);
-        setSelectedAnswer('');
+        sendData(answerId);
+        setAnswerId(-1);
         if (num === maxNum) {
             console.log('FINISH');
             navigate('/result', {replace: true});
         } else {
             console.log('NEXT');
-            navigate(`/test/${num + 1}`);
+            navigate(`/test/${num + 1}`, {replace: true});
         }
     };
 
     const handleChange = (event, value) => {
         setHasError(false);
-        setSelectedAnswer(value);
+        setAnswerId(value);
     }
 
     return (
@@ -251,11 +204,11 @@ const Question = (props) => {
                     <Stack mt={1} spacing={1}>
                         <div/>
                         {
-                            props.answers.map((el, ix) => {
-                                return el === selectedAnswer ?
-                                    <SelectedRadioControlLabel value={el} label={el} key={ix}/>
+                            props.answers.map((ans) => {
+                                return ans.id === answerId ?
+                                    <SelectedRadioControlLabel value={ans.id} label={ans.text} key={ans.id}/>
                                     :
-                                    <RadioControlLabel value={el} label={el} key={ix}/>
+                                    <RadioControlLabel value={ans.id} label={ans.text} key={ans.id}/>
                             })
                         }
                     </Stack>
