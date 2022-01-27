@@ -6,6 +6,7 @@ import bg from '../images/final.jpg'
 import NeonButton from "../components/neonButton";
 import {useNavigate} from "react-router-dom";
 import logo from "../images/logo.png";
+import bye from "../images/goodbye.png";
 
 
 let theme = createTheme({})
@@ -34,7 +35,7 @@ const FinalPage = () => {
                 <div style={{
                     backgroundImage: `url(${bg})`,
                     backgroundPosition: isMobile ? 'center 50%' : 'center 50%',
-                    backgroundRepeat: 'repeat-x',
+                    backgroundRepeat: 'repeat',
                     position: 'absolute',
                     zIndex: -1,
                     width: '100%',
@@ -60,6 +61,20 @@ const FinalPage = () => {
                             height: isMobile ? 'auto' : '25vh',
                             marginTop: '10vh',
                             zIndex: 1,
+                            ...streamStyle,
+                        }}
+                    />
+                    <animated.img
+                        src={bye}
+                        alt='byebye'
+                        style={{
+                            position: 'absolute',
+                            top: isMobile ? '30%' : '30%',
+                            left: isMobile ? '45%' : "50%",
+                            overflow: 'hidden',
+                            width: isMobile ? '60vw' : 'auto',
+                            height: isMobile ? 'auto' : '25vh',
+                            zIndex: -1,
                             ...streamStyle,
                         }}
                     />
