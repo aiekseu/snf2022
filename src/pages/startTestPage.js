@@ -149,7 +149,7 @@ const StartTest = () => {
                             }}
                         />
                         <div style={{height: isMobile ? 16 : 64}}/>
-                        <NeonButton text='Играть' onClick={() => navigate('/test/1')}/>
+                        <NeonButton text='Играть' onClick={() => navigate('/game/1')}/>
                         <div style={{height: 16}}/>
                     </animated.div>
                 </div>

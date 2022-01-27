@@ -179,10 +179,10 @@ const MobileQuestion = ({num, question}) => {
         setAnswerId(-1);
         if (isLastQuestion(num)) {
             console.log('FINISH');
-            navigate('/final', {replace: true});
+            navigate('/game_final', {replace: true});
         } else {
             console.log('NEXT');
-            navigate(`/test/${num + 1}`, {replace: true});
+            navigate(`/game/${num + 1}`, {replace: true});
         }
     };
 
@@ -288,10 +288,10 @@ const Question = ({num, question}) => {
         setAnswerId(-1);
         if (isLastQuestion(num)) {
             console.log('FINISH');
-            navigate('/final', {replace: true});
+            navigate('/game_final', {replace: true});
         } else {
             console.log('NEXT');
-            navigate(`/test/${num + 1}`, {replace: true});
+            navigate(`/game/${num + 1}`, {replace: true});
         }
     };
 

@@ -69,8 +69,8 @@ const FinalPage = () => {
                         alt='byebye'
                         style={{
                             position: 'absolute',
-                            top: isMobile ? '30%' : '30%',
-                            left: isMobile ? '45%' : "50%",
+                            top: '53%',
+                            left: isMobile ? '35%' : "45%",
                             overflow: 'hidden',
                             width: isMobile ? '60vw' : 'auto',
                             height: isMobile ? 'auto' : '25vh',
@@ -96,14 +96,14 @@ const FinalPage = () => {
                         style={{
                             height: 'auto',
                             width: isMobile ? '90vw' : '70vw',
-                            marginTop: '70vh',
+                            marginTop: '80vh',
                             marginRight: 'auto',
                             marginLeft: 'auto',
                             padding: 8,
                             ...streamStyle,
                         }}
                     >
-                        <NeonButton text='Завершить' onClick={() => navigate('/result')}/>
+                        <NeonButton text='Завершить' onClick={() => navigate('/game_result')}/>
                     </animated.div>
                 </div>
             </div>
