@@ -17,13 +17,13 @@ import bg from '../images/bg_questions.jpg'
 import logo from '../images/logo.png'
 
 import DownloadIcon from '@mui/icons-material/Download';
-import {Axios} from "axios-observable";
 import frame_1 from "../images/frame_1.jpg";
 import frame_2 from "../images/frame_2.jpg";
 import frame_3 from "../images/frame_3.jpg";
 import frame_4 from "../images/frame_4.jpg";
 import frame_5 from "../images/frame_5.jpg";
 import comics_final from "../images/comics_final.JPG";
+import axios from "axios";
 
 
 const DisplayOver = styled(Box)(({theme}) => ({
@@ -85,130 +85,6 @@ const ActionButton = styled(Button)(({theme}) => ({
 }));
 
 
-// const questions = [
-//     {
-//         num: 1,
-//         question: 'На чем вы отправитесь?',
-//         answers: [
-//             {
-//                 votes: 3,
-//                 text: 'Сверхзвуковая карета скорой помощи. Противозаконно, но быстро'
-//             },
-//             {
-//                 votes: 7,
-//                 text: 'ВАЗ 2111. Проверено временем, но сомнительно'
-//             },
-//             {
-//                 votes: 5,
-//                 text: 'Едем тестировать созданные командами машины'
-//             }
-//         ]
-//     },
-//     {
-//         num: 2,
-//         question: 'Какой сверх режим вы выбираете?',
-//         answers: [
-//             {
-//                 votes: 3,
-//                 text: 'Режим невидимости, никто нас не заметит, главное самим не потеряться'
-//             },
-//             {
-//                 votes: 7,
-//                 text: 'Режим безлимитного питания'
-//             },
-//             {
-//                 votes: 5,
-//                 text: 'Режим сверхбыстрого прыжка из точки А в точку Б'
-//             }
-//         ]
-//     },
-//     {
-//         num: 3,
-//         question: 'Вы приземлились днём на незнакомой планете в поисках необходимого вещества. Что будете делать?',
-//         answers: [
-//             {
-//                 votes: 3,
-//                 text: 'Без раздумий отправимся на поиски вещества'
-//             },
-//             {
-//                 votes: 7,
-//                 text: 'Подготовим набор первой необходимости, разведаем обстановку экологического и биологического характера, и отправимся в путь ночью'
-//             },
-//             {
-//                 votes: 5,
-//                 text: 'Подготовим базовый набор и без разведки отправимся днём на поиски'
-//             }
-//         ]
-//     },
-//     {
-//         num: 4,
-//         question: 'Кто возглавит операцию?',
-//         answers: [
-//             {
-//                 votes: 3,
-//                 text: 'Лунтик'
-//             },
-//             {
-//                 votes: 7,
-//                 text: 'Елена Малышева'
-//             },
-//             {
-//                 votes: 5,
-//                 text: 'Дэвид Хугазян'
-//             }
-//         ]
-//     },
-//     {
-//         num: 5,
-//         question: '',
-//         answers: [
-//             {
-//                 votes: 3,
-//                 text: ''
-//             },
-//             {
-//                 votes: 7,
-//                 text: ''
-//             },
-//             {
-//                 votes: 5,
-//                 text: ''
-//             }
-//         ]
-//     },
-// ];
-
-// const questions = questionsS
-//
-// function transform(questions) {
-//     const output = [];
-//     for (const question of questions) {
-//         const sumVotes = question.answers.reduce((a, ans) => a + ans.votes, 0);
-//         const percentageAnswers = [];
-//         let rest = 0;
-//         for (const [ix, answer] of question.answers.entries()) {
-//             if (ix !== question.answers.length - 1) {
-//                 const p = Math.round(answer.votes / sumVotes * 100) || 1;
-//                 rest += p;
-//                 percentageAnswers.push({
-//                     percentage: p,
-//                     text: answer.text
-//                 });
-//             } else {
-//                 percentageAnswers.push({
-//                     percentage: 100 - rest,
-//                     text: answer.text
-//                 });
-//             }
-//         }
-//         output.push({
-//             ...question,
-//             answers: percentageAnswers
-//         });
-//     }
-//     return output;
-// }
-
 const ResultPage = () => {
 
     let theme = createTheme({
@@ -240,11 +116,13 @@ const ResultPage = () => {
     const [questions, setQuestions] = useState([])
 
     useEffect(() => {
-        Axios.get('https://sanofi-genzyme.herokuapp.com/api/questions/')
-            .subscribe({
-                next: (response) => setQuestions(response.data),
-                error: (err) => alert(err)
-            });
+        axios.get('https://sanofi-genzyme.herokuapp.com/api/questions/')
+            .then(function (response) {
+                setQuestions(response.data);
+            })
+            .catch(function (error) {
+                alert(error);
+            })
     }, []);
 
 

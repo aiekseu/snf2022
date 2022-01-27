@@ -15,9 +15,8 @@ import {
 import {animated, useSpring} from "react-spring";
 import {useNavigate, useParams} from "react-router-dom";
 import {Box, styled} from "@mui/system";
-import {useState} from "react";
+import React, {useState} from "react";
 import {questions} from "../data/questions";
-import {Axios} from "axios-observable";
 
 import bg from '../images/bg_questions.jpg'
 import logo from '../images/logo.png'
@@ -26,6 +25,7 @@ import frame_2 from '../images/frame_2.jpg';
 import frame_3 from '../images/frame_3.jpg';
 import frame_4 from '../images/frame_4.jpg';
 import frame_5 from '../images/frame_5.jpg';
+import axios from "axios";
 
 
 const StyledRadio = styled((props) => <Radio size={'small'} {...props}/>)(() => ({
@@ -154,15 +154,17 @@ const sendData = (id) => {
         return
     }
     console.log(`Send >>> [${id}]`);
-    Axios.get(`https://sanofi-genzyme.herokuapp.com/api/answers/${id}/vote`)
-        .subscribe((res) => console.log(res.data));
+    axios.get(`https://sanofi-genzyme.herokuapp.com/api/answers/${id}/vote`)
+        .then(function (response) {
+            console.log(response.data);
+        })
 };
+
 
 const MobileQuestion = ({num, question}) => {
 
     const [answerId, setAnswerId] = useState(-1);
     const [hasError, setHasError] = useState(false);
-
     const comicsPages = [frame_1, frame_2, frame_3, frame_4, frame_5];
     num = parseInt(num);
 
@@ -206,7 +208,8 @@ const MobileQuestion = ({num, question}) => {
             </Typography>
             <Stack mt={2} justifyContent={'space-between'} alignItems={'stretch'}>
                 <img
-                    src={comicsPages[num-1]}
+                    src={`${comicsPages[num - 1]}?${new Date().getTime()}`}
+                    // src={comicsPages[num-1]}
                     alt={'Comics'}
                     style={{
                         height: 'auto',
@@ -217,6 +220,19 @@ const MobileQuestion = ({num, question}) => {
                         borderImage: 'linear-gradient(180deg, rgba(244,64,148,1) 0%, rgba(85,74,218,1) 100%)',
                         borderImageSlice: 1,
                     }}/>
+                {/*<Img*/}
+                {/*    src={comicsPages[num - 1]}*/}
+                {/*    loader={<div style={{textAlign: 'center'}}><CircularProgress style={{color: '#c50099'}} /></div>}*/}
+                {/*    style={{*/}
+                {/*        height: 'auto',*/}
+                {/*        boxSizing: 'border-box',*/}
+                {/*        width: '100%',*/}
+                {/*        borderWidth: 4,*/}
+                {/*        borderStyle: 'solid',*/}
+                {/*        borderImage: 'linear-gradient(180deg, rgba(244,64,148,1) 0%, rgba(85,74,218,1) 100%)',*/}
+                {/*        borderImageSlice: 1,*/}
+                {/*    }}*/}
+                {/*/>*/}
                 <Typography variant={'h6'} fontWeight={500} align={'center'} mt={2}>
                     {question.question}
                 </Typography>
@@ -301,7 +317,7 @@ const Question = ({num, question}) => {
             <Grid container mt={0} spacing={4} justifyContent={'center'} alignItems={'center'}>
                 <Grid item xs={6} md={isWideQuestion(num) || isLastQuestion(num) ? 9 : null} my={0}>
                     <img
-                        src={comicsPages[num-1]}
+                        src={comicsPages[num - 1]}
                         alt={'Comics'}
                         style={{
                             height: 'auto',
