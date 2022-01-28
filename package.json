@@ -2,7 +2,7 @@
   "name": "sanofi_genzyme",
   "version": "0.2.0",
   "private": true,
-  "homepage": "https://sconzo1.github.io/snf2022/",
+  "homepage": "https://pi4alb.github.io/snf2022/",
   "dependencies": {
     "@emotion/react": "^11.7.0",
     "@emotion/styled": "^11.6.0",
